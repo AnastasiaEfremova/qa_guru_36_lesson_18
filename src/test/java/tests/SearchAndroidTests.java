@@ -1,47 +1,38 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
+import screens.ArticleScreen;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Selenide.*;
-import static io.appium.java_client.AppiumBy.*;
 import static io.qameta.allure.Allure.step;
 
 public class SearchAndroidTests extends TestBase {
 
     @Test
     void successfulAppiumSearchTest() {
-        step("Type search", () -> {
-            $(accessibilityId("Search Wikipedia")).click();
-            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("Appium");
+        step("Поиск Appium", () -> {
+            searchScreen
+                    .openSearch()
+                    .enterSearchQuery("Appium")
+                    .verifyResultsFound();
         });
-        step("Verify content found", () ->
-                $$(id("org.wikipedia.alpha:id/page_list_item_title"))
-                        .shouldHave(sizeGreaterThan(0)));
     }
 
     @Test
     void successfulGithubSearchTest() {
-        step("Search for GitHub", () -> {
-            $(accessibilityId("Search Wikipedia")).click();
-            $(id("org.wikipedia.alpha:id/search_src_text"))
-                    .sendKeys("GitHub");
+        step("Поиск GitHub", () -> {
+            searchScreen
+                    .openSearch()
+                    .enterSearchQuery("GitHub")
+                    .verifyResultsFound();
         });
 
-        step("Verify search results appear", () -> {
-            $$(id("org.wikipedia.alpha:id/page_list_item_title"))
-                    .shouldHave(sizeGreaterThan(0), Duration.ofSeconds(15));
+        step("Открыть первую статью", () -> {
+            searchScreen.openFirstArticle();
         });
 
-        step("Open first article from results", () -> $$(id("org.wikipedia.alpha:id/page_list_item_title"))
-                .first()
-                .click());
-
-        step("Verify article opened successfully", () -> {
-            sleep(5000);
-            System.out.println("Article opened successfully!");
+        step("Проверить, что статья открыта", () -> {
+            ArticleScreen articleScreen = new ArticleScreen();
+            articleScreen.verifyArticleOpened();
         });
     }
 }

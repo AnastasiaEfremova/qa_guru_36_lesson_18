@@ -9,11 +9,15 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import screens.SearchScreen;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
+
+    protected SearchScreen searchScreen;
+
     @BeforeAll
     static void beforeAll() {
         System.setProperty("platform", System.getProperty("platform", "android"));
@@ -27,12 +31,13 @@ public class TestBase {
     void beforeEach() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         open();
+        searchScreen = new SearchScreen();
     }
 
     @AfterEach
     void addAttachments() {
         String sessionId = Selenide.sessionId().toString();
-        System.out.println(sessionId);
+        System.out.println("Session ID: " + sessionId);
 
         Attach.pageSource();
         closeWebDriver();
