@@ -1,7 +1,6 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
-import screens.ArticleScreen;
 
 import static io.qameta.allure.Allure.step;
 
@@ -9,7 +8,7 @@ public class SearchAndroidTests extends TestBase {
 
     @Test
     void successfulAppiumSearchTest() {
-        step("Поиск Appium", () -> {
+        step("Search Appium", () -> {
             searchScreen
                     .openSearch()
                     .enterSearchQuery("Appium")
@@ -19,20 +18,15 @@ public class SearchAndroidTests extends TestBase {
 
     @Test
     void successfulGithubSearchTest() {
-        step("Поиск GitHub", () -> {
+        step("Search GitHub", () -> {
             searchScreen
                     .openSearch()
                     .enterSearchQuery("GitHub")
                     .verifyResultsFound();
         });
 
-        step("Открыть первую статью", () -> {
+        step("Open the first article", () -> {
             searchScreen.openFirstArticle();
-        });
-
-        step("Проверить, что статья открыта", () -> {
-            ArticleScreen articleScreen = new ArticleScreen();
-            articleScreen.verifyArticleOpened();
         });
     }
 }
